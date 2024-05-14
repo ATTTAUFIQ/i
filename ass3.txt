@@ -1,0 +1,20 @@
+Lex (.l) file:
+%{ ... %} section: This contains C code that is copied into the generated C file by Lex. It includes standard input-output library (#include<stdio.h>) and declarations for yylex() and yyerror() functions.
+
+%token section: This defines token types that will be used in the Yacc file (%token ID TYPE SC NL COMMA). These tokens represent identifiers, types, semicolons, newlines, and commas respectively.
+
+Rules section:
+
+start: ... defines the start symbol for the grammar. It specifies that a valid statement starts with a TYPE token followed by a varlist, ending with a semicolon and a newline.
+varlist: ... defines a list of variables, either as a single variable (ID) or a list of variables separated by commas.
+Yacc (.y) file:
+%{ ... %} section: This contains C code that is copied into the generated C file by Yacc. It includes the standard input-output library (#include<stdio.h>), declarations for yyparse() function, and the yyerror() function.
+
+Rules section:
+
+start: ... specifies the grammar rule for a valid declarative statement, as defined in the Lex file.
+yyerror() function: This function is called when there is a syntax error in the input. It prints an error message indicating that the input is not a valid declarative statement.
+
+yywrap() function: This function indicates the end of input. It returns 1 to signify that there is no more input to be processed.
+
+main() function: This is the entry point of the program. It calls yyparse() to start the parsing process.

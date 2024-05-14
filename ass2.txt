@@ -1,0 +1,26 @@
+This Lex program is designed to analyze a text file and count the number of lines, spaces, tabs, characters, and words in the file. Let's break down the program for a viva discussion:
+
+%{ ... %} section:
+
+This section contains C code that is copied verbatim to the generated C file by Lex. In this case, it includes the standard input-output library (#include<stdio.h>) and initializes global variables (lc, sc, tc, ch, wc) to zero.
+%% section:
+
+This section separates the three main parts of the Lex file: the definition section, the rules section, and the C code section.
+Rules section:
+
+[\n] { lc++; ch += yyleng; }: This rule increments the line count (lc) and adds the length of the matched token (yyleng) to the character count (ch) whenever a newline character is encountered.
+[ \t] { sc++; ch += yyleng; }: This rule increments the space count (sc) and adds the length of the matched token to the character count whenever a space or tab character is encountered.
+[^\t\n ] { tc++; ch += yyleng; }: This rule increments the tab count (tc) and adds the length of the matched token to the character count whenever a character other than a tab, newline, or space is encountered.
+[^\t\n ]+ { wc++; ch += yyleng; }: This rule increments the word count (wc) and adds the length of the matched token to the character count whenever a sequence of characters other than tabs, newlines, or spaces is encountered.
+int yywrap() { return 1; }:
+
+This function indicates the end of input. In this case, it always returns 1, indicating that there is no more input to be processed.
+int main() { ... }:
+
+This is the main function of the C program.
+FILE *file = fopen("input1.txt", "r");: Opens a file named input1.txt in read mode.
+if (!file) { ... }: Checks if the file was opened successfully.
+yyin = file;: Sets the input file for the lexer to file.
+yylex();: Calls the lexer function to start lexing the input file.
+fclose(file);: Closes the input file.
+Prints the counts of lines, spaces, tabs, characters, and words using printf().

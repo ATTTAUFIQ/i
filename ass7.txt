@@ -1,0 +1,52 @@
+This Lex and Yacc (Bison) program is a simple compiler for a language that supports variable declarations and printing variable names. Here's a detailed explanation for a viva discussion:
+
+Lex (.l) file:
+%{ ... %} section: Contains C code that is copied into the generated C file by Lex. It includes the header file "y.tab.h" and standard C libraries.
+
+Rules section:
+
+"print" { return print; }: Matches the keyword "print" and returns the token print.
+"int"|"float"|"char" { ... }: Matches variable types ("int", "float", "char") and stores the type in yylval.type.
+[a-zA-Z][a-zA-Z0-9]* { ... }: Matches identifiers (variable names) and stores them in yylval.id.
+";" { return SEMI_COLON; }: Matches a semicolon and returns the token SEMI_COLON.
+"," { return COMMA; }: Matches a comma and returns the token COMMA.
+[ \t\n] { }: Ignores whitespace.
+. { printf("\nUnrecognized Syntax"); }: Handles unrecognized syntax.
+Yacc (.y) file:
+%{ ... %} section: Contains C code that is copied into the generated C file by Yacc. It includes standard C libraries and function prototypes.
+
+Declarations:
+
+Defines a structure SymbolEntry to store symbol information (type and identifier).
+Declares a symbol table table to store symbol entries.
+%union:
+
+Defines a union for the type and id attributes.
+%token:
+
+Declares tokens for commas, semicolons, types, identifiers, and the "print" keyword.
+%start and %type:
+
+Declares the start symbol and the type for the identifier non-terminal.
+Grammar rules:
+
+program: Parses statements and prints the symbol table when encountering a "print" statement.
+statement: Defines a variable declaration statement with a type and one or more identifiers.
+identifier: Handles identifiers and comma-separated lists of identifiers.
+Functions:
+
+addSymbols, addToTable, printTable: Functions to add symbols to the symbol table and print the symbol table.
+main: Calls yyparse() to start the parsing process.
+Error Handling:
+
+yyerror: Function to handle syntax errors and print error messages.
+Symbol Table:
+
+The program maintains a symbol table using a linked list of SymbolEntry structures.
+Overall, this program demonstrates how Lex and Yacc can be used together to implement a simple compiler for a language that supports variable declarations and printing variable names.
+
+
+
+
+
+

@@ -1,0 +1,33 @@
+Lex (.l) file:
+%{ ... %} section: This contains C code that is copied into the generated C file by Lex. It includes standard input-output library (#include<stdio.h>) and a header file (#include "y.tab.h") that declares the tokens defined in the Yacc file.
+
+Rules section:
+
+[\t\n] ;: This rule tells Lex to ignore tabs and newlines.
+
+("" ... ""): This rule matches compound statement keywords like "and", "or", and "but" case-insensitively, and returns the token COMPOUND.
+
+[a-zA-Z]+: This rule matches one or more alphabetic characters and returns the token WORD.
+
+\. { return DOT; }: This rule matches a dot (".") and returns the token DOT.
+
+Yacc (.y) file:
+%{ ... %} section: This contains C code that is copied into the generated C file by Yacc. It includes the standard input-output library (#include <stdio.h>).
+
+%token section: This declares the token types that will be used in the grammar (COMPOUND, WORD, DOT).
+
+Rules section:
+
+S1: S S1 | S ;: This rule defines a recursive grammar for multiple statements (S1) separated by newlines or tabs. It can be one or more statements (S) or just a single statement.
+
+S: WORD_LIST COMPOUND WORD_LIST DOT { ... } | WORD_LIST DOT { ... };: This rule defines a simple or compound statement. A simple statement consists of a list of words (WORD_LIST) followed by a dot (DOT). A compound statement consists of a word list, a compound keyword, another word list, and a dot.
+
+WORD_LIST: WORD WORD_LIST | WORD ;: This rule defines a list of words (WORD_LIST) that can be one or more words (WORD) separated by spaces.
+
+main() function:
+
+Opens the file sample.txt for parsing.
+Calls yyparse() to start the parsing process.
+yyerror() function:
+
+This function is called when there is a syntax error in the input. It prints an error message to stderr.

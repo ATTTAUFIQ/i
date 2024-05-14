@@ -1,0 +1,35 @@
+This C program demonstrates a simple recursive descent parser for parsing arithmetic expressions. It uses a grammar for expressions involving addition (+) and multiplication (*) operators with parentheses to control operator precedence. Here's a detailed explanation for a viva discussion:
+
+Definitions and Declarations:
+
+#include <stdio.h> and #include <string.h>: Include standard C libraries for input/output and string manipulation.
+#define SUCCESS 1 and #define FAILED 0: Define constants for success and failure of parsing.
+Function Prototypes:
+
+int E(), Edash(), T(), Tdash(), F();: Declare the functions for parsing different parts of the grammar.
+Global Variables:
+
+const char *cursor;: Pointer to track the current position in the input string.
+char string[64];: Array to store the input string.
+Main Function:
+
+Reads an input string (e.g., "i+(i+i)*i") using sscanf for demonstration purposes.
+Sets the cursor to the beginning of the input string.
+Prints a header for the parsing process.
+Calls the E() function, which is the starting point of the grammar.
+Checks if parsing was successful and the cursor has reached the end of the string.
+Parsing Functions:
+
+E(), Edash(), T(), Tdash(), F(): These functions correspond to the non-terminal symbols in the grammar.
+Each function implements a part of the grammar and prints the production rule that is being applied.
+The functions return SUCCESS if the corresponding part of the input is successfully parsed according to the grammar, and FAILED otherwise.
+Explanation of Parsing:
+
+The E() function represents an expression, which consists of a term (T()) followed by an optional expression (Edash()).
+The Edash() function handles the addition operator (+) and recursion to handle additional terms.
+The T() function represents a term, which consists of a factor (F()) followed by an optional term (Tdash()).
+The Tdash() function handles the multiplication operator (*) and recursion to handle additional factors.
+The F() function represents a factor, which can be a parenthesized expression or a single identifier (i in this case).
+Error Handling:
+
+If parsing fails at any point, the functions return FAILED, and the main function prints an error message.

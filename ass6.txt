@@ -1,0 +1,47 @@
+
+This Lex and Yacc (Bison) program implements a calculator that can handle arithmetic expressions, trigonometric functions (sin, cos, tan), logarithmic functions (log, ln), and square root. Here's a detailed explanation for a viva discussion:
+
+Lex (.l) file:
+%{ ... %} section: Contains C code that is copied into the generated C file by Lex. It includes the header file "y.tab.h" and standard C libraries.
+
+Rules section:
+
+[ \t] ;: Ignores whitespace.
+
+\n return 0;: Newline ends a token.
+
+[0-9]+(\.[0-9]*)? { ... }: Matches numbers (integer or decimal) and returns the token NUMBER. Uses atof(yytext) to convert the matched text to a double.
+
+sin return SIN;, cos return COS;, tan return TAN;, log return LOG;, sqrt return SQRT;, ln return LN;: Returns tokens for trigonometric and logarithmic functions.
+
+. return yytext[0];`: Returns any other character as-is.
+
+Yacc (.y) file:
+%{ ... %} section: Contains C code that is copied into the generated C file by Yacc. It includes standard C libraries and declares the yylval_dval variable defined in the Lex file.
+
+%union { double dval; }: Defines a union to store the value of tokens as doubles.
+
+%token <dval> NUMBER SIN COS TAN LOG LN SQRT SQUARE CUBE: Declares tokens and associates them with the dval attribute.
+
+%left '+' '-': Declares left associativity for addition and subtraction.
+
+%left '*' '/': Declares left associativity for multiplication and division.
+
+%nonassoc uminus: Declares a precedence level for the unary minus operator.
+
+%type <dval> exp: Declares the type of the exp non-terminal as dval.
+
+Rules section:
+
+ss: exp { ... }: The start symbol ss calculates and prints the result of the expression.
+
+exp: ...: Defines the grammar for expressions, including arithmetic operations, function calls, and parentheses.
+
+void yyerror(const char *s): Error handling function that prints an error message.
+
+main() function: Reads expressions from the user and parses them using yyparse() in a loop.
+
+Explanation:
+The program uses Lex to tokenize input and Yacc to parse the tokens and perform calculations.
+The grammar handles various types of expressions and functions, including handling errors like division by zero.
+Overall, this program demonstrates how Lex and Yacc can be used together to create a simple calculator with support for functions and mathematical operations.
